@@ -52,13 +52,12 @@ h1 {
 .animal {
   position: absolute;
   transform: translate(-50%, -50%);
-  object-fit: contain;
+  font-size: 96px;
   filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.35));
   transition:
     left 1.45s ease-in-out,
     top 1.45s ease-in-out,
-    width 1.1s ease-in-out,
-    height 1.1s ease-in-out,
+    font-size 1.1s ease-in-out,
     opacity 0.35s ease-in-out;
   opacity: 1;
   pointer-events: none;
@@ -117,20 +116,13 @@ const resetBtn = document.getElementById("resetBtn");
 const MAX = 7;
 const els = [];
 for(let i = 0; i < MAX; i++){
-  const img = document.createElement("img");
-  img.className = "animal";
-  slide.appendChild(img);
-  els.push(img);
+  const div = document.createElement("div");
+  div.className = "animal";
+  slide.appendChild(div);
+  els.push(div);
 }
 
-const animalImages = [
-  "https://cdn-icons-png.flaticon.com/512/1998/1998627.png",
-  "https://cdn-icons-png.flaticon.com/512/3069/3069172.png",
-  "https://cdn-icons-png.flaticon.com/512/616/616430.png",
-  "https://cdn-icons-png.flaticon.com/512/616/616408.png",
-  "https://cdn-icons-png.flaticon.com/512/1998/1998610.png",
-  "https://cdn-icons-png.flaticon.com/512/616/616554.png"
-];
+const animalEmojis = ["😺", "🐶", "🐰", "🐢", "🐟", "🐦"];
 
 const backgrounds = [
   "#ffffff", "#f2f2f2", "#e8f0fe", "#fff3cd", "#e6ffe6", "#fce4ec", "#e0f7fa", "#f4ecff"
@@ -150,7 +142,7 @@ function setRandomBackground(){
 }
 
 function chooseTwoAnimals(){
-  const s = shuffle(animalImages);
+  const s = shuffle(animalEmojis);
   return [s[0], s[1]];
 }
 
@@ -208,7 +200,7 @@ function randomStart(points, w, h){
         const dx = p.x - x, dy = p.y - y;
         if(Math.sqrt(dx * dx + dy * dy) < (p.size / 2) + r + 18){ ok = false; break; }
       }
-      if(ok){ out.push({x, y, size, src: points[i].src}); placed = true; }
+      if(ok){ out.push({x, y, size, emoji: points[i].emoji}); placed = true; }
     }
   }
   return out;
@@ -216,29 +208,29 @@ function randomStart(points, w, h){
 
 function layoutSix(w, h){
   const parts = shuffle([[5, 1], [4, 2], [3, 3], [2, 4], [1, 5]])[0];
-  const [aImg, bImg] = chooseTwoAnimals();
+  const [aEmoji, bEmoji] = chooseTwoAnimals();
   const sizes = [130, 130, 130, 130, 130, 130];
   const pts = [];
   const cxL = w * 0.35, cxR = w * 0.65, cy = h * 0.52;
 
-  function place(count, cx, src, startIdx){
+  function place(count, cx, emoji, startIdx){
     let local = [];
     if(count === 1){ local = [{x: cx, y: cy}]; }
     if(count === 2){ local = [{x: cx - 90, y: cy}, {x: cx + 90, y: cy}]; }
     if(count === 3){ local = [{x: cx, y: cy - 100}, {x: cx - 95, y: cy + 70}, {x: cx + 95, y: cy + 70}]; }
     if(count === 4){ local = [{x: cx - 95, y: cy - 95}, {x: cx + 95, y: cy - 95}, {x: cx - 95, y: cy + 95}, {x: cx + 95, y: cy + 95}]; }
     if(count === 5){ local = [{x: cx, y: cy - 130}, {x: cx - 110, y: cy - 10}, {x: cx + 110, y: cy - 10}, {x: cx - 80, y: cy + 130}, {x: cx + 80, y: cy + 130}]; }
-    local.forEach((p, i) => pts.push({x: p.x, y: p.y, size: sizes[startIdx + i], src}));
+    local.forEach((p, i) => pts.push({x: p.x, y: p.y, size: sizes[startIdx + i], emoji}));
   }
 
-  place(parts[0], cxL, aImg, 0);
-  place(parts[1], cxR, bImg, parts[0]);
+  place(parts[0], cxL, aEmoji, 0);
+  place(parts[1], cxR, bEmoji, parts[0]);
 
   return enforceNoOverlap(keepInside(pts, w, h), w, h);
 }
 
 function layoutGeneric(count, w, h){
-  const img = shuffle(animalImages)[0];
+  const emoji = shuffle(animalEmojis)[0];
   const size = 120;
   const pts = [];
   const cols = Math.ceil(Math.sqrt(count));
@@ -252,7 +244,7 @@ function layoutGeneric(count, w, h){
   for(let r = 0; r < rows; r++){
     for(let c = 0; c < cols; c++){
       if(k >= count) break;
-      pts.push({x: startX + c * (size + gapX), y: startY + r * (size + gapY), size, src: img});
+      pts.push({x: startX + c * (size + gapX), y: startY + r * (size + gapY), size, emoji});
       k++;
     }
   }
@@ -288,11 +280,10 @@ function apply(points){
     if(i < points.length){
       const p = points[i];
       el.style.display = "block";
-      el.src = p.src;
+      el.innerText = p.emoji;
       el.style.left = p.x + "px";
       el.style.top = p.y + "px";
-      el.style.width = p.size + "px";
-      el.style.height = p.size + "px";
+      el.style.fontSize = p.size + "px";
       el.style.opacity = "1";
     } else {
       el.style.display = "none";
