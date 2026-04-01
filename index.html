@@ -1,69 +1,112 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Numerics Six or Not Six (Animals)</title>
+<title>Six or Not Six (Animals)</title>
 <style>
-  body{
-    margin:0;
-    background:#ffffff;
-    font-family:"Century Gothic", Arial, sans-serif;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    min-height:100vh;
-  }
-  .slide{
-    width:1800px;
-    height:1000px;
-    max-width:96vw;
-    max-height:78vh;
-    aspect-ratio: 9 / 5;
-    position:relative;
-    overflow:hidden;
-    border:1px solid #d9d9d9;
-    background:#ffffff;
-  }
-  .animal{
-    position:absolute;
-    transform:translate(-50%,-50%);
-    object-fit:contain;
-    filter: drop-shadow(0 14px 28px rgba(0,0,0,0.35));
-    transition:
-      left 1.45s ease-in-out,
-      top 1.45s ease-in-out,
-      width 1.1s ease-in-out,
-      height 1.1s ease-in-out,
-      opacity 0.35s ease-in-out;
-    opacity:1;
-    pointer-events:none;
-  }
-  .controls{
-    margin-top:18px;
-    display:flex;
-    gap:14px;
-  }
-  button{
-    font-family:"Century Gothic", Arial, sans-serif;
-    font-size:28px;
-    padding:16px 34px;
-    background:#ffffff;
-    border:1px solid #999;
-    cursor:pointer;
-  }
-  button:hover{ background:#f4f4f4; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.container {
+  text-align: center;
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  width: 95%;
+  max-width: 1400px;
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 32px;
+}
+
+.slide {
+  width: 100%;
+  height: 700px;
+  position: relative;
+  background: #f9f9f9;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 3px solid #667eea;
+  margin: 20px 0;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.animal {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.35));
+  transition:
+    left 1.45s ease-in-out,
+    top 1.45s ease-in-out,
+    width 1.1s ease-in-out,
+    height 1.1s ease-in-out,
+    opacity 0.35s ease-in-out;
+  opacity: 1;
+  pointer-events: none;
+}
+
+.controls {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+button {
+  font-size: 18px;
+  padding: 12px 30px;
+  margin: 0 10px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+button:active {
+  transform: translateY(0);
+}
 </style>
 </head>
 <body>
+
+<div class="container">
+  <h1>Six or Not Six (Animals)</h1>
+  
   <div class="slide" id="slide"></div>
+  
   <div class="controls">
-    <button id="startBtn">Start</button>
-    <button id="pauseBtn">Pause</button>
-    <button id="resetBtn">Reset</button>
+    <button id="startBtn">▶ Start</button>
+    <button id="pauseBtn">⏸ Pause</button>
+    <button id="resetBtn">↻ Reset</button>
   </div>
+</div>
 
 <script>
 const slide = document.getElementById("slide");
@@ -71,9 +114,9 @@ const startBtn = document.getElementById("startBtn");
 const pauseBtn = document.getElementById("pauseBtn");
 const resetBtn = document.getElementById("resetBtn");
 
-const MAX = 7; // allow up to 7 animals
+const MAX = 7;
 const els = [];
-for(let i=0;i<MAX;i++){
+for(let i = 0; i < MAX; i++){
   const img = document.createElement("img");
   img.className = "animal";
   slide.appendChild(img);
@@ -90,20 +133,20 @@ const animalImages = [
 ];
 
 const backgrounds = [
-  "#ffffff","#f2f2f2","#e8f0fe","#fff3cd","#e6ffe6","#fce4ec","#e0f7fa","#f4ecff"
+  "#ffffff", "#f2f2f2", "#e8f0fe", "#fff3cd", "#e6ffe6", "#fce4ec", "#e0f7fa", "#f4ecff"
 ];
 
 function shuffle(arr){
   const a = [...arr];
-  for(let i=a.length-1;i>0;i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]] = [a[j],a[i]];
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
 }
 
 function setRandomBackground(){
-  slide.style.background = backgrounds[Math.floor(Math.random()*backgrounds.length)];
+  slide.style.background = backgrounds[Math.floor(Math.random() * backgrounds.length)];
 }
 
 function chooseTwoAnimals(){
@@ -112,40 +155,40 @@ function chooseTwoAnimals(){
 }
 
 function keepInside(points, w, h){
-  return points.map(p=>{
-    const r = p.size/2;
+  return points.map(p => {
+    const r = p.size / 2;
     return {
       ...p,
-      x: Math.max(r+10, Math.min(w-r-10, p.x)),
-      y: Math.max(r+10, Math.min(h-r-10, p.y))
+      x: Math.max(r + 10, Math.min(w - r - 10, p.x)),
+      y: Math.max(r + 10, Math.min(h - r - 10, p.y))
     };
   });
 }
 
 function enforceNoOverlap(points, w, h){
-  const a = points.map(p=>({...p}));
-  for(let pass=0; pass<24; pass++){
-    let moved=false;
-    for(let i=0;i<a.length;i++){
-      for(let j=i+1;j<a.length;j++){
-        const A=a[i], B=a[j];
-        const ra=A.size/2, rb=B.size/2;
-        const need=ra+rb+18;
-        let dx=B.x-A.x, dy=B.y-A.y;
-        let d=Math.sqrt(dx*dx+dy*dy);
-        if(d<need){
-          moved=true;
-          if(d===0){ dx=1; dy=0; d=1; }
-          const push=(need-d)/2, ux=dx/d, uy=dy/d;
-          A.x-=ux*push; A.y-=uy*push;
-          B.x+=ux*push; B.y+=uy*push;
+  const a = points.map(p => ({...p}));
+  for(let pass = 0; pass < 24; pass++){
+    let moved = false;
+    for(let i = 0; i < a.length; i++){
+      for(let j = i + 1; j < a.length; j++){
+        const A = a[i], B = a[j];
+        const ra = A.size / 2, rb = B.size / 2;
+        const need = ra + rb + 18;
+        let dx = B.x - A.x, dy = B.y - A.y;
+        let d = Math.sqrt(dx * dx + dy * dy);
+        if(d < need){
+          moved = true;
+          if(d === 0){ dx = 1; dy = 0; d = 1; }
+          const push = (need - d) / 2, ux = dx / d, uy = dy / d;
+          A.x -= ux * push; A.y -= uy * push;
+          B.x += ux * push; B.y += uy * push;
         }
       }
     }
-    for(let i=0;i<a.length;i++){
-      const r=a[i].size/2;
-      a[i].x=Math.max(r+10, Math.min(w-r-10, a[i].x));
-      a[i].y=Math.max(r+10, Math.min(h-r-10, a[i].y));
+    for(let i = 0; i < a.length; i++){
+      const r = a[i].size / 2;
+      a[i].x = Math.max(r + 10, Math.min(w - r - 10, a[i].x));
+      a[i].y = Math.max(r + 10, Math.min(h - r - 10, a[i].y));
     }
     if(!moved) break;
   }
@@ -153,40 +196,39 @@ function enforceNoOverlap(points, w, h){
 }
 
 function randomStart(points, w, h){
-  const out=[];
-  for(let i=0;i<points.length;i++){
-    const size=points[i].size, r=size/2;
-    let placed=false;
-    for(let t=0;t<5000 && !placed;t++){
-      const x=r+20+Math.random()*Math.max(1, w-(r*2)-40);
-      const y=r+20+Math.random()*Math.max(1, h-(r*2)-40);
-      let ok=true;
+  const out = [];
+  for(let i = 0; i < points.length; i++){
+    const size = points[i].size, r = size / 2;
+    let placed = false;
+    for(let t = 0; t < 5000 && !placed; t++){
+      const x = r + 20 + Math.random() * Math.max(1, w - (r * 2) - 40);
+      const y = r + 20 + Math.random() * Math.max(1, h - (r * 2) - 40);
+      let ok = true;
       for(const p of out){
-        const dx=p.x-x, dy=p.y-y;
-        if(Math.sqrt(dx*dx+dy*dy) < (p.size/2)+r+18){ ok=false; break; }
+        const dx = p.x - x, dy = p.y - y;
+        if(Math.sqrt(dx * dx + dy * dy) < (p.size / 2) + r + 18){ ok = false; break; }
       }
-      if(ok){ out.push({x,y,size,src:points[i].src}); placed=true; }
+      if(ok){ out.push({x, y, size, src: points[i].src}); placed = true; }
     }
   }
   return out;
 }
 
-// Part-part-whole layouts for 6
 function layoutSix(w, h){
-  const parts = shuffle([[5,1],[4,2],[3,3],[2,4],[1,5]])[0];
+  const parts = shuffle([[5, 1], [4, 2], [3, 3], [2, 4], [1, 5]])[0];
   const [aImg, bImg] = chooseTwoAnimals();
-  const sizes = [130,130,130,130,130,130];
-  const pts=[];
-  const cxL = w*0.35, cxR = w*0.65, cy = h*0.52;
+  const sizes = [130, 130, 130, 130, 130, 130];
+  const pts = [];
+  const cxL = w * 0.35, cxR = w * 0.65, cy = h * 0.52;
 
   function place(count, cx, src, startIdx){
-    let local=[];
-    if(count===1){ local=[{x:cx, y:cy}]; }
-    if(count===2){ local=[{x:cx-90,y:cy},{x:cx+90,y:cy}]; }
-    if(count===3){ local=[{x:cx,y:cy-100},{x:cx-95,y:cy+70},{x:cx+95,y:cy+70}]; }
-    if(count===4){ local=[{x:cx-95,y:cy-95},{x:cx+95,y:cy-95},{x:cx-95,y:cy+95},{x:cx+95,y:cy+95}]; }
-    if(count===5){ local=[{x:cx,y:cy-130},{x:cx-110,y:cy-10},{x:cx+110,y:cy-10},{x:cx-80,y:cy+130},{x:cx+80,y:cy+130}]; }
-    local.forEach((p,i)=> pts.push({x:p.x,y:p.y,size:sizes[startIdx+i],src}));
+    let local = [];
+    if(count === 1){ local = [{x: cx, y: cy}]; }
+    if(count === 2){ local = [{x: cx - 90, y: cy}, {x: cx + 90, y: cy}]; }
+    if(count === 3){ local = [{x: cx, y: cy - 100}, {x: cx - 95, y: cy + 70}, {x: cx + 95, y: cy + 70}]; }
+    if(count === 4){ local = [{x: cx - 95, y: cy - 95}, {x: cx + 95, y: cy - 95}, {x: cx - 95, y: cy + 95}, {x: cx + 95, y: cy + 95}]; }
+    if(count === 5){ local = [{x: cx, y: cy - 130}, {x: cx - 110, y: cy - 10}, {x: cx + 110, y: cy - 10}, {x: cx - 80, y: cy + 130}, {x: cx + 80, y: cy + 130}]; }
+    local.forEach((p, i) => pts.push({x: p.x, y: p.y, size: sizes[startIdx + i], src}));
   }
 
   place(parts[0], cxL, aImg, 0);
@@ -195,42 +237,40 @@ function layoutSix(w, h){
   return enforceNoOverlap(keepInside(pts, w, h), w, h);
 }
 
-// Generic layouts for non-6 counts (1..7 except 6)
 function layoutGeneric(count, w, h){
   const img = shuffle(animalImages)[0];
   const size = 120;
-  const pts=[];
+  const pts = [];
   const cols = Math.ceil(Math.sqrt(count));
-  const rows = Math.ceil(count/cols);
-  const gapX = size*0.9, gapY = size*0.9;
-  const totalW = cols*size + (cols-1)*gapX;
-  const totalH = rows*size + (rows-1)*gapY;
-  const startX = w/2 - totalW/2 + size/2;
-  const startY = h/2 - totalH/2 + size/2;
-  let k=0;
-  for(let r=0;r<rows;r++){
-    for(let c=0;c<cols;c++){
-      if(k>=count) break;
-      pts.push({x:startX + c*(size+gapX), y:startY + r*(size+gapY), size, src:img});
+  const rows = Math.ceil(count / cols);
+  const gapX = size * 0.9, gapY = size * 0.9;
+  const totalW = cols * size + (cols - 1) * gapX;
+  const totalH = rows * size + (rows - 1) * gapY;
+  const startX = w / 2 - totalW / 2 + size / 2;
+  const startY = h / 2 - totalH / 2 + size / 2;
+  let k = 0;
+  for(let r = 0; r < rows; r++){
+    for(let c = 0; c < cols; c++){
+      if(k >= count) break;
+      pts.push({x: startX + c * (size + gapX), y: startY + r * (size + gapY), size, src: img});
       k++;
     }
   }
   return enforceNoOverlap(keepInside(pts, w, h), w, h);
 }
 
-// Build sequence with 50% six, otherwise 1..7 excluding 6
 function buildSequence(){
   const w = slide.clientWidth, h = slide.clientHeight;
-  const seq=[];
-  for(let i=0;i<12;i++){
+  const seq = [];
+  for(let i = 0; i < 12; i++){
     const isSix = Math.random() < 0.5;
     let count, arranged;
     if(isSix){
       arranged = layoutSix(w, h);
       count = 6;
     } else {
-      const choices = [1,2,3,4,5,7];
-      count = choices[Math.floor(Math.random()*choices.length)];
+      const choices = [1, 2, 3, 4, 5, 7];
+      count = choices[Math.floor(Math.random() * choices.length)];
       arranged = layoutGeneric(count, w, h);
     }
     const start = randomStart(arranged, w, h);
@@ -240,10 +280,10 @@ function buildSequence(){
   return seq;
 }
 
-let running=false, timer=null, stepIndex=0, sequence=[];
+let running = false, timer = null, stepIndex = 0, sequence = [];
 
 function apply(points){
-  for(let i=0;i<els.length;i++){
+  for(let i = 0; i < els.length; i++){
     const el = els[i];
     if(i < points.length){
       const p = points[i];
@@ -276,10 +316,12 @@ function start(){
   running = true;
   nextFrame();
 }
+
 function pause(){
   running = false;
   clearTimeout(timer);
 }
+
 function resetAnimation(){
   pause();
   stepIndex = 0;
@@ -294,5 +336,6 @@ resetBtn.addEventListener("click", resetAnimation);
 
 resetAnimation();
 </script>
+
 </body>
 </html>
